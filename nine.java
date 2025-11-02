@@ -3,64 +3,107 @@
 #File Operations
 code:
 import java.io.*;
-import java.util.*;
-
-public class FileOperationsSimple {
+import java.util.Scanner;
+public class FileOperations {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int ch;
+        int choice;
         System.out.println("URK24CS6006 - PUJITHA");
-
         do {
-            System.out.println("\n=== FILE MENU ===");
-            System.out.println("1.Create File  2.Rename File  3.Delete File");
-            System.out.println("4.Create Dir   5.Absolute Path  6.List Files  7.Exit");
-            System.out.print("Enter choice: ");
-            ch = sc.nextInt();
-            sc.nextLine();
+            System.out.println("\n==== FILE OPERATIONS MENU ====");
+            System.out.println("1. Create a New File");
+            System.out.println("2. Rename a File");
+            System.out.println("3. Delete a File");
+            System.out.println("4. Create a Directory");
+            System.out.println("5. Find Absolute Path of a File");
+            System.out.println("6. Display All Files in a Directory");
+            System.out.println("7. Exit");
+            System.out.print("Enter your choice: ");
+            choice = sc.nextInt();
+            sc.nextLine(); 
 
-            switch (ch) {
-                case 1 -> {
-                    System.out.print("File name: ");
-                    File f = new File(sc.nextLine());
-                    System.out.println(f.createNewFile() ? "File created." : "Already exists!");
-                }
-                case 2 -> {
-                    System.out.print("Old name: ");
-                    File oldf = new File(sc.nextLine());
-                    System.out.print("New name: ");
-                    File newf = new File(sc.nextLine());
-                    System.out.println(oldf.renameTo(newf) ? "Renamed." : "Failed.");
-                }
-                case 3 -> {
-                    System.out.print("File to delete: ");
-                    File del = new File(sc.nextLine());
-                    System.out.println(del.delete() ? "Deleted." : "Not found!");
-                }
-                case 4 -> {
-                    System.out.print("Dir name: ");
-                    File d = new File(sc.nextLine());
-                    System.out.println(d.mkdir() ? "Directory created." : "Exists or failed.");
-                }
-                case 5 -> {
-                    System.out.print("File name: ");
-                    System.out.println("Path: " + new File(sc.nextLine()).getAbsolutePath());
-                }
-                case 6 -> {
-                    System.out.print("Dir path: ");
-                    File dir = new File(sc.nextLine());
-                    if (dir.isDirectory()) {
-                        for (String name : Objects.requireNonNull(dir.list()))
-                            System.out.println(name);
-                    } else System.out.println("Invalid directory!");
-                }
-                case 7 -> System.out.println("Exiting...");
-                default -> System.out.println("Invalid choice!");
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter file name to create: ");
+                    String fileName = sc.nextLine();
+                    try {
+                        File f = new File(fileName);
+                        if (f.createNewFile())
+                            System.out.println("File created: " + f.getName());
+                        else
+                            System.out.println("File already exists!");
+                    } catch (IOException e) {
+                        System.out.println("Error creating file!");
+                    }
+                    break;
+
+                case 2:
+                    System.out.print("Enter existing file name: ");
+                    String oldName = sc.nextLine();
+                    System.out.print("Enter new file name: ");
+                    String newName = sc.nextLine();
+                    File oldFile = new File(oldName);
+                    File newFile = new File(newName);
+                    if (oldFile.renameTo(newFile))
+                        System.out.println("File renamed successfully.");
+                    else
+                        System.out.println("Rename failed.");
+                    break;
+
+                case 3:
+                    System.out.print("Enter file name to delete: ");
+                    String delName = sc.nextLine();
+                    File delFile = new File(delName);
+                    if (delFile.delete())
+                        System.out.println("File deleted successfully.");
+                    else
+                        System.out.println("File not found or unable to delete.");
+                    break;
+
+                case 4:
+                    System.out.print("Enter directory name: ");
+                    String dirName = sc.nextLine();
+                    File dir = new File(dirName);
+                    if (dir.mkdir())
+                        System.out.println("Directory created successfully.");
+                    else
+                        System.out.println("Directory already exists or failed to create.");
+                    break;
+
+                case 5:
+                    System.out.print("Enter file name: ");
+                    String absName = sc.nextLine();
+                    File absFile = new File(absName);
+                    System.out.println("Absolute Path: " + absFile.getAbsolutePath());
+                    break;
+
+                case 6:
+                    System.out.print("Enter directory path: ");
+                    String path = sc.nextLine();
+                    File directory = new File(path);
+                    if (directory.isDirectory()) {
+                        System.out.println("Files in " + path + ":");
+                        String[] files = directory.list();
+                        if (files != null) {
+                            for (String file : files)
+                                System.out.println(file);
+                        }
+                    } else {
+                        System.out.println("Not a valid directory!");
+                    }
+                    break;
+
+                case 7:
+                    System.out.println("Exiting program...");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice! Try again.");
             }
-        } while (ch != 7);
-        sc.close();
+        } while (choice != 7);
     }
 }
+
 
 #character stream 
 code:
